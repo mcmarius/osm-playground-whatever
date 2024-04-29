@@ -1,0 +1,42 @@
+diff --git a/scenes/scene.yaml b/scenes/scene.yaml
+index b7a4468..38b5162 100644
+--- a/scenes/scene.yaml
++++ b/scenes/scene.yaml
+@@ -102,14 +102,19 @@ styles:
+         blend_order: 3
+ 
+ sources:
+-    osm:
+-        type: MVT
+-        url: https://tile.nextzen.org/tilezen/vector/v1/256/all/{z}/{x}/{y}.mvt
++    mapzen-osm:
++        type: Raster
++        url:  https://tile.openstreetmap.org/{z}/{x}/{y}.png
++        tile_size : 256
+         max_zoom: 16
+-        url_params:
+-            api_key: global.sdk_api_key
+ 
+ layers:
++    osm-raster:
++        data:
++          source: mapzen-osm
++        draw:
++          raster:
++            order: 0
+     touch:
+         data: { source: touch }
+         line:
+
+diff --git a/core/deps/yaml-cpp/src/scanscalar.cpp b/core/deps/yaml-cpp/src/scanscalar.cpp
+index 3e23349..054a401 100644
+--- a/core/deps/yaml-cpp/src/scanscalar.cpp
++++ b/core/deps/yaml-cpp/src/scanscalar.cpp
+@@ -1,6 +1,7 @@
+ #include "scanner.h"
+ 
+ #include <algorithm>
++#include <limits>
+ 
+ #include "exp.h"
+ #include "stream.h"
